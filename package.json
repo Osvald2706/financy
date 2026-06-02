@@ -9,10 +9,7 @@
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
-    "db:push:postgres": "prisma db push --schema=prisma/schema.postgres.prisma",
-    "db:generate:postgres": "prisma generate --schema=prisma/schema.postgres.prisma",
-    "setup": "npm install && npx prisma db push",
-    "deploy": "npx prisma generate --schema=prisma/schema.postgres.prisma && npx prisma db push --schema=prisma/schema.postgres.prisma && next build"
+    "setup": "npm install && npx prisma db push"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
