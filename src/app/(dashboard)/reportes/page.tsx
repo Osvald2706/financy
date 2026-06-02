@@ -94,7 +94,7 @@ export default function ReportesPage() {
         ["Balance Neto", formatCurrency(balance)],
       ]
 
-      autoTable(doc, {
+      const summaryResult = autoTable(doc, {
         startY: 70,
         head: [["Concepto", "Monto"]],
         body: summaryData,
@@ -104,7 +104,7 @@ export default function ReportesPage() {
 
       if (debts.length > 0) {
         doc.setFontSize(16)
-        doc.text("Detalle de Deudas", 14, doc.lastAutoTable.finalY + 20)
+        doc.text("Detalle de Deudas", 14, summaryResult.lastY + 20)
         
         const debtData = debts.map(d => [
           d.name,
@@ -117,7 +117,7 @@ export default function ReportesPage() {
         ])
 
         autoTable(doc, {
-          startY: doc.lastAutoTable.finalY + 25,
+          startY: summaryResult.lastY + 25,
           head: [["Nombre", "Acreedor", "Total", "Pagado", "Restante", "Interés", "Estado"]],
           body: debtData,
           theme: "grid",
