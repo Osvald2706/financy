@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { User, Mail, DollarSign, Save, Loader2, Palette, Bell, Shield } from "lucide-react"
+import { User, Mail, DollarSign, Save, Loader2, Palette, Bell, Shield, Brain, Eye, EyeOff, Key } from "lucide-react"
 import toast from "react-hot-toast"
 
 export default function ConfiguracionPage() {
@@ -15,13 +15,16 @@ export default function ConfiguracionPage() {
     name: "",
     email: "",
     monthlyIncome: "",
+    openrouterApiKey: "",
   })
+  const [showKey, setShowKey] = useState(false)
 
   useEffect(() => {
     if (session?.user) {
       setForm(f => ({ ...f, name: session.user?.name || "", email: session.user?.email || "" }))
       fetch("/api/user").then(r => r.json()).then(data => {
         if (data.monthlyIncome) setForm(f => ({ ...f, monthlyIncome: String(data.monthlyIncome) }))
+        if (data.openrouterApiKey) setForm(f => ({ ...f, openrouterApiKey: data.openrouterApiKey }))
       }).catch(() => {})
     }
   }, [session])
@@ -35,6 +38,7 @@ export default function ConfiguracionPage() {
         body: JSON.stringify({
           name: form.name,
           monthlyIncome: form.monthlyIncome ? parseFloat(form.monthlyIncome) : 0,
+          openrouterApiKey: form.openrouterApiKey,
         }),
       })
       if (!res.ok) throw new Error()
@@ -118,6 +122,54 @@ export default function ConfiguracionPage() {
               <Button onClick={handleSave} disabled={saving}>
                 {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
                 Guardar
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Brain className="h-5 w-5 text-primary" />
+                Inteligencia Artificial
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">API Key de OpenRouter</label>
+                <div className="relative">
+                  <Key className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    className="pl-10 pr-10"
+                    type={showKey ? "text" : "password"}
+                    placeholder="sk-or-v1-..."
+                    value={form.openrouterApiKey}
+                    onChange={(e) => setForm({ ...form, openrouterApiKey: e.target.value })}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowKey(!showKey)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Obtén tu API key gratis en{" "}
+                  <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                    openrouter.ai/keys
+                  </a>
+                  . Sin key, el análisis local funciona igual.
+                </p>
+              </div>
+              <div className="flex items-center gap-2 p-3 rounded-lg bg-primary/5 border border-primary/10">
+                <Brain className="h-4 w-4 text-primary shrink-0" />
+                <p className="text-xs text-muted-foreground">
+                  Con la API key activas análisis avanzados con IA (Qwen) en el Dashboard y el asistente financiero.
+                </p>
+              </div>
+              <Button onClick={handleSave} disabled={saving}>
+                {saving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
+                Guardar Key
               </Button>
             </CardContent>
           </Card>

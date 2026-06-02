@@ -52,7 +52,7 @@ export async function GET() {
         deadline: g.deadline?.toISOString() || null,
       })),
       monthlyIncome: user?.monthlyIncome || 0,
-    })
+    }, user?.openrouterApiKey || undefined)
 
     return NextResponse.json(analysis)
   } catch (error) {

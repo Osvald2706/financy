@@ -15,6 +15,7 @@ export async function PUT(req: Request) {
       data: {
         name: body.name,
         monthlyIncome: body.monthlyIncome ? parseFloat(body.monthlyIncome) : undefined,
+        openrouterApiKey: body.openrouterApiKey !== undefined ? body.openrouterApiKey : undefined,
       },
     })
     return NextResponse.json({
@@ -22,6 +23,7 @@ export async function PUT(req: Request) {
       name: user.name,
       email: user.email,
       monthlyIncome: user.monthlyIncome,
+      openrouterApiKey: user.openrouterApiKey,
     })
   } catch {
     return NextResponse.json({ error: "Error" }, { status: 500 })
@@ -36,7 +38,7 @@ export async function GET() {
     }
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { id: true, name: true, email: true, monthlyIncome: true, currency: true, createdAt: true },
+      select: { id: true, name: true, email: true, monthlyIncome: true, currency: true, createdAt: true, openrouterApiKey: true },
     })
     return NextResponse.json(user)
   } catch {

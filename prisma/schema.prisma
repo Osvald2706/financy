@@ -8,16 +8,17 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  name          String?
-  email         String   @unique
-  password      String
-  avatar        String?
-  currency      String   @default("MXN")
-  locale        String   @default("es-MX")
-  monthlyIncome Float    @default(0)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id               String   @id @default(cuid())
+  name             String?
+  email            String   @unique
+  password         String
+  avatar           String?
+  currency         String   @default("MXN")
+  locale           String   @default("es-MX")
+  monthlyIncome    Float    @default(0)
+  openrouterApiKey String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   accounts      Account[]
   sessions      Session[]

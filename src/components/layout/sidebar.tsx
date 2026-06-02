@@ -20,6 +20,7 @@ import {
   PiggyBank,
   ChevronLeft,
   Bell,
+  Brain,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -32,6 +33,7 @@ const navigation = [
   { name: "Calendario", href: "/calendario", icon: Calendar },
   { name: "Metas", href: "/metas", icon: Target },
   { name: "Reportes", href: "/reportes", icon: FileText },
+  { name: "Asistente", href: "/asistente", icon: Brain },
 ]
 
 export function Sidebar() {

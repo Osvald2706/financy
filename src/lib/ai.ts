@@ -54,10 +54,24 @@ export interface AIAnalysisResponse {
   riskLevel: "low" | "medium" | "high"
 }
 
-export async function analyzeFinances(data: AIAnalysisRequest): Promise<AIAnalysisResponse> {
-  if (!process.env.OPENROUTER_API_KEY) {
+function createClient(apiKey?: string) {
+  return new OpenAI({
+    baseURL: "https://openrouter.ai/api/v1",
+    apiKey: apiKey || process.env.OPENROUTER_API_KEY || "",
+    defaultHeaders: {
+      "HTTP-Referer": "https://financy.app",
+      "X-Title": "Financy",
+    },
+  })
+}
+
+export async function analyzeFinances(data: AIAnalysisRequest, userApiKey?: string): Promise<AIAnalysisResponse> {
+  const apiKey = userApiKey || process.env.OPENROUTER_API_KEY
+  if (!apiKey) {
     return getLocalAnalysis(data)
   }
+
+  const client = createClient(apiKey)
 
   try {
     const prompt = `Eres un asesor financiero experto. Analiza estas finanzas personales y proporciona recomendaciones.
